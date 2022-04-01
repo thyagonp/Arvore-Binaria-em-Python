@@ -1,0 +1,151 @@
+class NodoArvore:
+    def __init__(self,chave=None,esquerda=None,direita=None):
+        self.chave = chave
+        self.esquerda = esquerda
+        self.direita = direita
+
+    def __repr__(self):
+        return '%s <- %s -> %s' % (self.esquerda and self.esquerda.chave,
+                                   self.chave,
+                                   self.direita and self.direita.chave)
+
+
+#----------finalizei a classe ---------------
+
+def em_ordem(raiz):
+    if not raiz:
+        return
+    #visita filho a esquerda.
+    em_ordem(raiz.esquerda)
+
+    #imprimo a nodo corrente.
+    print(raiz.chave,end=", ")
+
+    #visita filho da direita
+    em_ordem(raiz.direita)
+
+
+def pos_ordem(raiz):
+    if not raiz:
+        return
+    
+    #visita filho a esquerda.
+    pos_ordem(raiz.esquerda)
+
+    #visita filho da direita
+    pos_ordem(raiz.direita)
+
+    #imprimo a nodo corrente.
+    print(raiz.chave,end=", ") 
+  
+    
+def pre_ordem(raiz):
+    if not raiz:
+        return
+    #imprimo a nodo corrente.
+    print(raiz.chave,end=", ")
+
+    #visita filho a esquerda.
+    pre_ordem(raiz.esquerda)  
+
+    #visita filho da direita
+    pre_ordem(raiz.direita)
+
+
+def insere(raiz, nodo):
+    if raiz is None:
+        raiz = nodo
+    elif raiz.chave < nodo.chave:
+        if raiz.direita is None:
+            raiz.direita = nodo
+        else:
+            insere(raiz.direita,nodo)
+    else:
+        if raiz.esquerda is None:
+            raiz.esquerda = nodo
+        else:
+            insere(raiz.esquerda, nodo)
+
+
+def busca(raiz,valor):
+    if raiz is None:
+        return None
+    if raiz.chave == valor:
+        return valor
+    if raiz.chave < valor:
+        return busca(raiz.direita,valor)
+    return busca(raiz.esquerda,valor)
+
+                    # 150  0
+def verBalanceamento(nodo,altura):
+    if nodo.esquerda is None:
+        alturaEsq = -1
+    else:
+        alturaEsq = altura + 1
+    if nodo.direita is None:
+        alturaDir = -1
+    else:
+        alturaDir = altura + 1
+    #print("alturaEsq = ",alturaEsq)
+    #print("alturaDir = ",alturaDir)
+
+    altura = alturaDir - alturaEsq
+    if altura < 0:
+        altura *= -1  #modulo
+    print("Altura do nó",nodo.chave,"é",altura)
+    return altura
+
+def anterior(raiz,nodo,nodoAnt):
+    if raiz.chave == nodo.chave:
+        return nodoAnt
+    if raiz.chave < nodo.chave:
+        return anterior(raiz.direita,nodo, raiz)
+    else:
+        return anterior(raiz.esquerda,nodo, raiz)
+
+def balancearInserido(nodo):
+    noAnt = anterior(raiz,nodo,raiz)
+    print(noAnt)
+    h=0
+    h=verBalanceamento(noAnt,h-1)
+    if noAnt != raiz:
+        noAnt =  anterior(raiz,noAnt,raiz)
+        h = verBalanceamento(noAnt,h-1)
+    if(h > 1):
+        print("Desbalanceada")
+        #preposições de rotação
+        
+
+
+raiz = NodoArvore(50)
+insere(raiz,NodoArvore(35))
+insere(raiz,NodoArvore(121))
+insere(raiz,NodoArvore(9))
+insere(raiz,NodoArvore(150))
+insere(raiz,NodoArvore(42))
+insere(raiz,NodoArvore(151))
+
+
+print(raiz)
+print(raiz.esquerda)
+print(raiz.direita)
+print(raiz.direita.direita)
+
+
+
+print("\nEm Ordem: \t",end="")
+em_ordem(raiz)
+print("\n")
+#print("\nPré Ordem: \t",end="")
+#pre_ordem(raiz)
+#print("\nPós Ordem: \t",end="")
+#pos_ordem(raiz)
+
+#valor = 150
+#print("O valor está na arvore? ",busca(raiz,valor)) 
+
+
+balancearInserido(NodoArvore(150))
+
+      
+
